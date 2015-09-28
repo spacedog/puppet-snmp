@@ -78,7 +78,6 @@ class snmp (
   $service_enable       = $::snmp::params::service_enable,
 ) inherits ::snmp::params {
 
-  validate_bool($service_enable)
   validate_hash($snmpd_config)
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($package_ensure,[
@@ -95,6 +94,12 @@ class snmp (
     $package,
     $service,
   )
+
+  if is_string($service_enable) {
+    validate_re($service_enable, ['^manual$', '^mask$'])
+  } else {
+    validate_bool($service_enable)
+  }
 
   # Merg default_snmpd_config and snmpd_confg
   $_snmpd_config = merge($default_snmpd_config, $snmpd_config)

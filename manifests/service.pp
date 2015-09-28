@@ -35,9 +35,14 @@ class snmp::service(
   $service_ensure,
   $service_enable,
 ){
-  validate_bool($service_enable)
   validate_re($service_ensure,['^stopped$', '^running$'])
   validate_string($service)
+
+  if is_string($service_enable) {
+    validate_re($service_enable, ['^manual$', '^mask$'])
+  } else {
+    validate_bool($service_enable)
+  }
 
   service {$service:
     ensure => $service_ensure,
