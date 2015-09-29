@@ -4,169 +4,163 @@
 <% @snmpd_config.sort.map do |var, val| -%>
 <% case var
 when 'access' -%>
-<%# access GROUP CONTEXT {any|v1|v2c|usm|tsm|ksm} LEVEL PREFX READ WRITE NOTIFY %>
+<%# access GROUP CONTEXT {any|v1|v2c|usm|tsm|ksm} LEVEL PREFX READ WRITE NOTIFY -%>
 <% if val.is_a? Hash -%>
 <% val.each do |group,params| -%>
 access <%= group -%>
-<%- if params.has_key?('context') -%> <%= params['context'] -%> <% end -%>
-<%- if params.has_key?('version') -%> <%= params['version']  -%> <% end -%>
-<%- if params.has_key?('level')   -%> <%= params['level']    -%> <% end -%>
-<%- if params.has_key?('prefix')  -%> <%= params['prefix']   -%> <% end -%>
-<%- if params.has_key?('read')    -%> <%= params['read']     -%> <% end -%>
-<%- if params.has_key?('write')   -%> <%= params['write']    -%> <% end -%>
-<%- if params.has_key?('notify')  -%> <%= params['write']    -%> <% end -%>
+<% if params.has_key?('context') %> <%= params['context']  %><% end -%>
+<% if params.has_key?('version') %> <%= params['version']  %><% end -%>
+<% if params.has_key?('level')   %> <%= params['level']    %><% end -%>
+<% if params.has_key?('prefix')  %> <%= params['prefix']   %><% end -%>
+<% if params.has_key?('read')    %> <%= params['read']     %><% end -%>
+<% if params.has_key?('write')   %> <%= params['write']    %><% end -%>
+<% if params.has_key?('notify')  %> <%= params['write']    %><% end -%>
 <% end %>
 <% end -%>
-<%# authuser   TYPES [-s MODEL] USER  [LEVEL [OID | -V VIEW [CONTEXT]]] %>
+<%# authuser   TYPES [-s MODEL] USER  [LEVEL [OID | -V VIEW [CONTEXT]]] -%>
 <% when 'authuser' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |user,params| -%>
-authuser <%- if params.has_key?('types') -%> <%= params['types'].join(',') -%> <% end -%>
-<%- if params.has_key?('model')  -%> -S <%= params['model']  -%> <% end -%>  <%= user -%>
-<%- if params.has_key?('level')  -%> <%=    params['level']  -%> <% end -%>
-<%- if params.has_key?('oid')      -%> <%= params['oid']     -%>
+authuser <% if params.has_key?('types') -%> <%= params['types'].join(',') -%> <% end -%>
+<% if params.has_key?('model')   %> -S <%= params['model']  %><% end -%> <%= user -%>
+<% if params.has_key?('level')   %> <%=    params['level']  %><% end -%>
+<% if params.has_key?('oid')     %> <%= params['oid']       -%>
 <% else -%>
-<%- if params.has_key?('view')     -%> -V <%= params['view'] -%> <% end -%>
-<%- if params.has_key?('context')  -%> <%= params['context'] -%> <% end -%>
+<% if params.has_key?('view')    %> -V <%= params['view']   %><% end -%>
+<% if params.has_key?('context') %> <%= params['context']   %><% end -%>
+<% end -%>
 <% end %>
 <% end -%>
-<% end -%>
-<%# com2sec  [-Cn CONTEXT] SECNAME SOURCE COMMUNITY  %>
+<%# com2sec  [-Cn CONTEXT] SECNAME SOURCE COMMUNITY  -%>
 <% when 'com2sec' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |secname,params| -%>
 com2sec <%= secname -%>
-<%- if params.has_key?('context')   -%> -Cn <%= params['context'] -%> <% end -%>
-<%- if params.has_key?('source')    -%> <%= params['source']      -%> <% end -%>
-<%- if params.has_key?('community') -%> <%= params['community']   -%> <% end -%>
+<% if params.has_key?('context')   %> -Cn <%= params['context'] %><% end -%>
+<% if params.has_key?('source')    %> <%= params['source']      %><% end -%>
+<% if params.has_key?('community') %> <%= params['community']   %><% end -%>
 <% end %>
 <% end -%>
-<%# group GROUP {v1|v2c|usm|tsm|ksm} SECNAME %>
+<%# group GROUP {v1|v2c|usm|tsm|ksm} SECNAME -%>
 <% when 'group' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |group,gparams| -%>
 <% gparams.each do |params| -%>
 group <%= group -%>
-<%- if params.has_key?('version') -%> <%= params['version']  -%> <% end -%>
-<%- if params.has_key?('secname') -%> <%= params['secname']  -%> <% end -%>
-
+<% if params.has_key?('version') %> <%= params['version'] %><% end -%>
+<% if params.has_key?('secname') %> <%= params['secname'] %><% end %>
 <% end -%>
 <% end -%>
 <% end -%>
-<%#  view VNAME TYPE OID [MASK] %>
+<%#  view VNAME TYPE OID [MASK] -%>
 <% when 'view' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |vname,vparams| -%>
 <% vparams.each do |params| -%>
 view <%= vname -%>
-<%- if params.has_key?('type') -%> <%= params['type'] -%> <% end -%>
-<%- if params.has_key?('oid')  -%> <%= params['oid']  -%> <% end -%>
-<%- if params.has_key?('mask') -%> <%= params['mask']  -%> <% end -%>
-
+<% if params.has_key?('type') %> <%= params['type'] %><% end -%>
+<% if params.has_key?('oid')  %> <%= params['oid']  %><% end -%>
+<% if params.has_key?('mask') %> <%= params['mask'] %><% end %>
 <% end -%>
 <% end -%>
 <% end -%>
-<%# disk PATH [ MINSPACE | MINPERCENT% ] %>
+<%# disk PATH [ MINSPACE | MINPERCENT% ] -%>
 <% when 'disk' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |path,params| -%>
 disk <%= path -%>
-<%- if params.has_key?('minspace') -%> <%= params['minspace'] -%> <% end %>
-<% end %>
+<% if params.has_key?('minspace') %> <%= params['minspace'] %><% end %>
 <% end -%>
-<%# extend [MIBOID] NAME PROG ARGS %>
+<% end -%>
+<%# extend [MIBOID] NAME PROG ARGS -%>
 <% when 'extend' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |name,params| -%>
-extend <%- if params.has_key?('miboid') -%> <%= params['miboid'] -%> <% end -%> <%= name -%>
-<%- if params.has_key?('prog') -%> <%= params['prog'] -%> <% end -%>
-
+extend <% if params.has_key?('miboid') %> <%= params['miboid'] %><% end %> <%= name -%>
+<% if params.has_key?('prog') -%> <%= params['prog'] -%><% end %>
 <% end -%>
 <% end -%>
-<%# extend [MIBOID] NAME PROG ARGS %>
+<%# extend [MIBOID] NAME PROG ARGS -%>
 <% when 'extend-sh' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |name,params| -%>
-extend-sh <%- if params.has_key?('mioid') -%> <%= params['mioid'] -%> <% end -%> <%= name -%>
-<%- if params.has_key?('prog') -%> <%= params['prog'] -%> <% end -%>
-
+extend-sh <% if params.has_key?('mioid') %> <%= params['mioid'] %><% end %> <%= name -%>
+<% if params.has_key?('prog') %> <%= params['prog'] %><% end %>
 <% end -%>
 <% end -%>
-<%# load MAX1 [MAX5 [MAX15]] %>
+<%# load MAX1 [MAX5 [MAX15]] -%>
 <% when 'load' -%>
 <% if val.is_a? Hash -%>
-load <%- if val.has_key?('max1') -%> <%= val['max1']  -%> <% end -%>
-<%- if val.has_key?('max5')      -%> <%= val['max5']  -%>
-<%- if val.has_key?('max15')     -%> <%= val['max15'] -%> <% end -%>
+load <% if val.has_key?('max1')  %> <%= val['max1']  %><% end -%>
+<% if val.has_key?('max5')       %> <%= val['max5']  -%>
+<% if val.has_key?('max15')      %> <%= val['max15'] %><% end -%>
+<% end %>
 <% end -%>
-<% end -%>
-<%#proc NAME [MAX [MIN]] %>
+<%#proc NAME [MAX [MIN]] -%>
 <% when 'proc' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |name,params| -%>
 proc <%= name -%>
-<%- if params.has_key?('min') -%> <%= params['min'] -%>
-<%- if params.has_key?('max') -%> <%= params['max'] -%> <% end -%>
+<% if params.has_key?('min') %> <%= params['min'] -%>
+<% if params.has_key?('max') %> <%= params['max'] %><% end -%>
 <% end %>
 <% end -%>
 <% end -%>
-<%# rocommunity COMMUNITY [SOURCE [OID | -V VIEW [CONTEXT]]] %>
+<%# rocommunity COMMUNITY [SOURCE [OID | -V VIEW [CONTEXT]]] -%>
 <% when 'rocommunity' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |community,cparams| -%>
 rocommunity <%= community -%>
 <% cparams.each do |params| -%>
-<%- if params.has_key?('source')  -%> <%= params['source']  -%>
-<%- if params.has_key?('oid')     -%> <%= params['oid']     -%>
+<% if params.has_key?('source')  %> <%= params['source']  -%>
+<% if params.has_key?('oid')     %> <%= params['oid']     -%>
 <% else -%>
-<%- if params.has_key?('view')    -%> -V <%= params['view'] -%> <% end -%>
-<%- if params.has_key?('context') -%> <%= params['context'] -%> <% end -%>
-<% end -%>
-
-<% end -%>
+<% if params.has_key?('view')    %> -V <%= params['view'] %><% end -%>
+<% if params.has_key?('context') %> <%= params['context'] %><% end -%>
+<% end %>
 <% end -%>
 <% end -%>
 <% end -%>
-<%# rwcommunity COMMUNITY [SOURCE [OID | -V VIEW [CONTEXT]]] %>
+<% end -%>
+<%# rwcommunity COMMUNITY [SOURCE [OID | -V VIEW [CONTEXT]]] -%>
 <% when 'rwcommunity' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |community,cparams| -%>
 rwcommunity <%= community -%>
 <% cparams.each do |params| -%>
-<%- if params.has_key?('source')  -%> <%= params['source']  -%>
-<%- if params.has_key?('oid')     -%> <%= params['oid']     -%>
+<% if params.has_key?('source')  %> <%= params['source']  -%>
+<% if params.has_key?('oid')     %> <%= params['oid']     -%>
 <% else -%>
-<%- if params.has_key?('view')    -%> -V <%= params['view'] -%> <% end -%>
-<%- if params.has_key?('context') -%> <%= params['context'] -%> <% end -%>
+<% if params.has_key?('view')    %> -V <%= params['view'] %><% end -%>
+<% if params.has_key?('context') %> <%= params['context'] %><% end -%>
 <% end -%>
-
 <% end %>
 <% end -%>
 <% end -%>
 <% end -%>
-<%# rouser [-s SECMODEL] USER [noauth|auth|priv [OID | -V VIEW [CONTEXT]]] %>
+<%# rouser [-s SECMODEL] USER [noauth|auth|priv [OID | -V VIEW [CONTEXT]]] -%>
 <% when 'rouser' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |user,params| -%>
-rouser <%- if params.has_key?('secmodel')  -%> -S <%= params['secmodel']  -%> <% end -%>  <%= user -%>
-<%- if params.has_key?('seclevel') -%> <%= params['seclevel']  -%> <% end -%>
-<%- if params.has_key?('oid')      -%> <%= params['oid']     -%>
+rouser <% if params.has_key?('secmodel')  %> -S <%= params['secmodel']  %><% end %><%= user -%>
+<% if params.has_key?('seclevel') %> <%= params['seclevel'] %><% end -%>
+<% if params.has_key?('oid')      %> <%= params['oid']      -%>
 <% else -%>
-<%- if params.has_key?('view')     -%> -V <%= params['view'] -%> <% end -%>
-<%- if params.has_key?('context')  -%> <%= params['context'] -%> <% end -%>
+<% if params.has_key?('view')     %> -V <%= params['view']  %><% end -%>
+<% if params.has_key?('context')  %> <%= params['context']  %><% end -%>
 <% end %>
 <% end -%>
 <% end -%>
-<%# trapsink HOST [COMMUNITY [PORT]]  %>
+<%# trapsink HOST [COMMUNITY [PORT]]  -%>
 <% when 'trapsink' -%>
 <% if val.is_a? Hash -%>
 <% val.each do |host,params| -%>
 trapsink <%= host -%>
-<%- if params.has_key?('community') -%> <%= params['community']  -%> 
-<%- if params.has_key?('port')      -%> <%= params['port']  -%> <% end -%>
+<% if params.has_key?('community') %> <%= params['community'] -%> 
+<% if params.has_key?('port')      %> <%= params['port']      %> <% end -%>
 <% end -%>
 <% end -%>
-<% end %>
+<% end -%>
 <% else -%>
 <%= var %> <%= val %>
 <% end -%>
