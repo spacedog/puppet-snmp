@@ -102,8 +102,8 @@ class snmp::params {
             'community' => 'public',
           },
         }
-
       }
+      $varsnmpdir = '/var/lib/snmp'
     }
     default: {
       $package = 'net-snmp'
@@ -143,6 +143,7 @@ class snmp::params {
         # lint:endignore
         'syslocation' => 'Unknown (edit /etc/snmp/snmpd.conf)',
       }
+      $varsnmpdir = '/var/lib/net-snmp'
     }
   }
 

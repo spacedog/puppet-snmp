@@ -24,8 +24,6 @@ class snmp::config (
   $snmpd_config,
 ) {
   validate_re($ensure, ['^present$', '^absent$'])
-  validate_absolute_path($config_file)
-  # TODO: add more checks for parameters inside snmpd_config hash
   validate_hash(
     $snmpd_config,
   )

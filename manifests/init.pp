@@ -76,9 +76,11 @@ class snmp (
   $service              = $::snmp::params::service,
   $service_ensure       = $::snmp::params::service_ensure,
   $service_enable       = $::snmp::params::service_enable,
+  $users                = {},
 ) inherits ::snmp::params {
 
   validate_hash($snmpd_config)
+  validate_hash($users)
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($package_ensure,[
     '^present$',
@@ -124,9 +126,15 @@ class snmp (
     service_enable => $service_enable,
   }
 
+  if !empty($users) {
+    create_resources('snmp::user', $users)
+    Snmp::User[keys($users)] -> Class['snmp::service']
+  }
+
   Anchor['snmp::begin'] ->
   Class['snmp::install'] ->
   Class['snmp::config'] ~>
   Class['snmp::service'] ->
   Anchor['snmp::end']
+
 }
