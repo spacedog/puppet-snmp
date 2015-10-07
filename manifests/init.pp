@@ -77,6 +77,7 @@ class snmp (
   $service_ensure       = $::snmp::params::service_ensure,
   $service_enable       = $::snmp::params::service_enable,
   $users                = {},
+  $daemon_options       = $::snmp::params::daemon_options,
 ) inherits ::snmp::params {
 
   validate_hash($snmpd_config)
@@ -95,6 +96,7 @@ class snmp (
   validate_string(
     $package,
     $service,
+    $daemon_options
   )
 
   if is_string($service_enable) {
@@ -116,9 +118,10 @@ class snmp (
   }
 
   class{'snmp::config':
-    ensure       => $ensure,
-    config_file  => $::snmp::params::config_file,
-    snmpd_config => $_snmpd_config,
+    ensure         => $ensure,
+    config_file    => $::snmp::params::config_file,
+    snmpd_config   => $_snmpd_config,
+    daemon_options => $daemon_options,
   }
   class{'snmp::service':
     service        => $service,

@@ -22,11 +22,15 @@ class snmp::config (
   $ensure,
   $config_file,
   $snmpd_config,
+  $daemon_options,
 ) {
+  include snmp::params
+
   validate_re($ensure, ['^present$', '^absent$'])
   validate_hash(
     $snmpd_config,
   )
+  validate_string($daemon_options)
 
   file {$config_file:
     ensure  => $ensure,
@@ -36,4 +40,17 @@ class snmp::config (
     content => template("${module_name}/snmpd.conf.erb"),
   }
 
+  file {$::snmp::params::daemon_options_file:
+    ensure => $ensure,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
+  $_line = "${::snmp::params::daemon_options_prefix}=\"${daemon_options}\""
+  file_line {'daemon_options':
+    path  => $::snmp::params::daemon_options_file,
+    line  => $_line,
+    match => "^${::snmp::params::daemon_options_prefix}",
+  }
 }

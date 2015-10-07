@@ -39,8 +39,13 @@ class snmp::params {
   # OS dependent parameters
   case $::osfamily {
     /^(Debian|Ubuntu)$/: {
-      $package = 'snmpd'
-      $os_snmpd_config = {
+      $package               = 'snmpd'
+      # lint:ignore:80chars
+      $daemon_options        = '-Lsd -Lf /dev/null -u snmp -g snmp -I -smux -p /var/run/snmpd.pid'
+      # lint:endignore
+      $daemon_options_file   = '/etc/default/snmpd'
+      $daemon_options_prefix = 'SNMPDOPTS'
+      $os_snmpd_config       = {
         'agentaddress'            => 'udp:127.0.0.1:161',
         'defaultmonitors'         => 'yes',
         'disk'                    => {
@@ -103,12 +108,15 @@ class snmp::params {
           },
         }
       }
-      $varsnmpdir = '/var/lib/snmp'
+      $varsnmpdir            = '/var/lib/snmp'
     }
     default: {
-      $package = 'net-snmp'
-      $os_snmpd_config ={
-        'access'                     => {
+      $package               = 'net-snmp'
+      $daemon_options        = '-LS0-6d'
+      $daemon_options_file   = '/etc/sysconfig/snmpd'
+      $daemon_options_prefix = 'OPTIONS'
+      $os_snmpd_config       ={
+        'access' => {
           'notConfigGroup' => {
             'context'      => '""',
             'version'      => 'any',
@@ -143,7 +151,7 @@ class snmp::params {
         # lint:endignore
         'syslocation' => 'Unknown (edit /etc/snmp/snmpd.conf)',
       }
-      $varsnmpdir = '/var/lib/net-snmp'
+      $varsnmpdir            = '/var/lib/net-snmp'
     }
   }
 
