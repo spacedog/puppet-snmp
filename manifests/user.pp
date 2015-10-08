@@ -72,7 +72,7 @@ define snmp::user (
   }
   exec { "${title}_reset_password":
     # lint:ignore:80chars
-    command     => "/bin/echo createUser cacti ${authtype} ${_authpass} ${privtype} ${_privpass} >> ${::snmp::params::varsnmpdir}/${::snmp::params::service}.conf",
+    command     => "/bin/echo createUser ${title} ${authtype} ${_authpass} ${privtype} ${_privpass} >> ${::snmp::params::varsnmpdir}/${::snmp::params::service}.conf",
     # lint:endignore
     refreshonly => true,
     subscribe   => Exec["${title}_stop_${::snmp::params::service}"],
