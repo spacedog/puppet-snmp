@@ -1,5 +1,4 @@
 language: ruby
-script: "bundle exec rake validate && bundle exec rake spec SPEC_OPTS='--format documentation'"
 rvm:
   - 2.0.0
 env:
