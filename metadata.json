@@ -1,10 +1,10 @@
 {
-  "name": "abaranov-snmp",
-  "version": "0.1.0",
+  "name": "spacedog-snmp",
+  "version": "0.1.1",
   "author": "abaranov",
-  "summary": null,
+  "summary": "Module manages snmp configurations",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/spacedog/puppet-snmp",
   "project_page": null,
   "issues_url": null,
   "dependencies": [
