@@ -49,8 +49,9 @@ class snmp::config (
 
   $_line = "${::snmp::params::daemon_options_prefix}=\"${daemon_options}\""
   file_line {'daemon_options':
-    path  => $::snmp::params::daemon_options_file,
-    line  => $_line,
-    match => "^${::snmp::params::daemon_options_prefix}",
+    ensure => $ensure,
+    path   => $::snmp::params::daemon_options_file,
+    line   => $_line,
+    match  => "^${::snmp::params::daemon_options_prefix}=",
   }
 }

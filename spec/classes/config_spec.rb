@@ -24,8 +24,9 @@ describe('snmp::config') do
   context 'with basic init defaults' do
     let(:params) {
       {
-        'ensure'       => 'present',
-        'config_file'  => '/etc/snmp/snmpd.conf',
+        'ensure'         => 'present',
+        'daemon_options' => '-LS0-6d',
+        'config_file'    => '/etc/snmp/snmpd.conf',
         'snmpd_config' => {
           # Base snmpd config
           'view' => {
@@ -100,6 +101,14 @@ view systemview included .1.3.6.1.2.1.25.1.1
 ',
       })
     }
+    it "should contain daemon_options file_line" do
+      should contain_file_line('daemon_options').with( {
+        'ensure' => 'present',
+        'path'   => '/etc/sysconfig/snmpd',
+        'line'   => 'OPTIONS="-LS0-6d"',
+        'match'  => '^OPTIONS='
+      })
+    end
 
   end
 end
